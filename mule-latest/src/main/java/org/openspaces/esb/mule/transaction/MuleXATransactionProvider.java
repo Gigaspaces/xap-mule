@@ -50,7 +50,7 @@ public class MuleXATransactionProvider implements TransactionProvider {
         // get the context transaction from the Space and nullify it. We will handle
         // the declarative transaction nature using Spring sync
         Transaction.Created transaction = ((ISpaceProxy) space).getContextTransaction();
-        ((ISpaceProxy) space).setContextTansaction(null);
+        ((ISpaceProxy) space).replaceContextTransaction(null);
 
         xaResourceSpace.transaction = transaction;
 
