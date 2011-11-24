@@ -29,10 +29,8 @@ import org.mule.config.i18n.CoreMessages;
 import org.mule.transport.AbstractMessageDispatcher;
 import org.openspaces.core.GigaSpace;
 import org.springframework.context.ApplicationContext;
-import org.springframework.dao.DataAccessException;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -113,26 +111,11 @@ public class OpenSpacesMessageDispatcher extends AbstractMessageDispatcher {
         Object payload = event.getMessage().getPayload();
 
         if (payload != null) {
+            int updateModifiers = updateOrWrite ? UpdateModifiers.UPDATE_OR_WRITE : UpdateModifiers.WRITE_ONLY; 
             if (payload instanceof Object[]) {
-                Object[] payloadArr = (Object[]) payload;
-                if (updateOrWrite) {
-                    long[] leases = new long[payloadArr.length];
-                    Arrays.fill(leases, writeLease);
-                    Object[] retVals = gigaSpace.updateMultiple(payloadArr, leases, UpdateModifiers.UPDATE_OR_WRITE);
-                    for (Object retVal : retVals) {
-                        if (retVal instanceof DataAccessException) {
-                            throw (DataAccessException) retVal;
-                        }
-                    }
-                } else {
-                    gigaSpace.writeMultiple(payloadArr, writeLease);
-                }
+                gigaSpace.writeMultiple((Object[]) payload, writeLease, updateModifiers);
             } else {
-                if (updateOrWrite) {
-                    gigaSpace.write(payload, writeLease, updateTimeout, UpdateModifiers.UPDATE_OR_WRITE);
-                } else {
-                    gigaSpace.write(payload, writeLease, updateTimeout, UpdateModifiers.WRITE_ONLY);
-                }
+                gigaSpace.write(payload, writeLease, updateTimeout, updateModifiers);
             }
         }
         return null;
