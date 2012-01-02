@@ -104,7 +104,7 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         boolean returnResponse = returnResponse(event, doSend) && !isTransactional;
        
         //assign correlationId for sync invocations - so that the request can be correlated with the response
-        final String correlationId = createCorrelationId();
+        final String correlationId = createCorrelationIdIfNotExists(event); 
         
         MuleMessage message = event.getMessage();
         connector.getSessionHandler().storeSessionInfoToMessage(event.getSession(), message);
@@ -131,6 +131,14 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
             return waitForResponse(event, correlationId);
         }
         return null;
+    }
+
+    private String createCorrelationIdIfNotExists(final MuleEvent event)
+    {
+        String correlationId = event.getMessage().getCorrelationId() ;
+        if(correlationId == null || correlationId.trim().length()==0)
+            correlationId = UUID.randomUUID().toString();
+        return correlationId;
     }
 
     private OpenSpacesQueueObject prepareMessageForDispatch(final  MuleMessage message,
