@@ -29,12 +29,14 @@ import org.mule.api.endpoint.InboundEndpoint;
 import org.mule.api.lifecycle.CreateException;
 import org.mule.api.service.Service;
 import org.mule.api.transport.Connector;
+import org.mule.api.transport.PropertyScope;
 import org.mule.transport.NullPayload;
 import org.mule.transport.PollingReceiverWorker;
 import org.mule.transport.TransactedPollingMessageReceiver;
 import org.openspaces.core.SpaceClosedException;
 import org.openspaces.core.SpaceInterruptedException;
 
+import com.gigaspaces.document.DocumentProperties;
 import com.gigaspaces.query.ISpaceQuery;
 import com.j_spaces.core.exception.SpaceUnavailableException;
 
@@ -153,6 +155,13 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
 
             OpenSpacesQueueObject responseEntry = connector.newQueueEntry(getEndpointURI().getAddress() + OpenSpacesQueueMessageDispatcher.DEFAULT_RESPONSE_QUEUE);
             responseEntry.setCorrelationID(correlationId);
+            
+            DocumentProperties payloadMetaData = new DocumentProperties();
+            for (String propertyName : responseMessage.getPropertyNames(PropertyScope.OUTBOUND)) {
+                Object property = responseMessage.getProperty(propertyName, PropertyScope.OUTBOUND);
+				payloadMetaData.put(propertyName, property);
+            }
+            responseEntry.setPayloadMetaData(payloadMetaData);
             
             Object payload = responseMessage.getPayload();
             if(payload instanceof NullPayload)
