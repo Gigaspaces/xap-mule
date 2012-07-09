@@ -5,20 +5,22 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-core-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-module-spring-config-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-module-client-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-tests-functional-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-core-3.1.0-tests.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/openspaces"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gigaspaces"/>
 	<classpathentry kind="lib" path="/openspaces/lib/platform/jee/connector.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/jug-2.0.0-osgi-asl.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-module-annotations-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-module-jbossts-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-module-spring-extras-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-http-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-stdio-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-vm-3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/jug-2.0.0-asl.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-core-3.3.0.jar" sourcepath="D:/temp/mule-3.3.0-source"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-core-3.3.0-tests.jar" sourcepath="D:/temp/mule-3.3.0-source"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-module-annotations-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-module-client-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-module-spring-config-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-module-spring-extras-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-tests-functional-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-http-3.3.0.jar" sourcepath="D:/temp/mule-3.3.0-src-all"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-stdio-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-transport-vm-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mvel2-2.0.19.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/jgrapht-jdk1.5-0.7.3.jar"/>
+	<classpathentry kind="lib" path="lib/platform/mule/mule-module-jbossts-3.3.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

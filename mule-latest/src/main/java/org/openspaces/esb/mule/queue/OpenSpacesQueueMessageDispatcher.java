@@ -23,13 +23,15 @@ import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
 import org.mule.api.endpoint.EndpointURI;
 import org.mule.api.endpoint.OutboundEndpoint;
+import org.mule.api.execution.ExecutionCallback;
+import org.mule.api.execution.ExecutionTemplate;
 import org.mule.api.processor.MessageProcessor;
-import org.mule.api.transaction.TransactionCallback;
+import org.mule.api.transaction.TransactionConfig;
 import org.mule.api.transport.DispatchException;
 import org.mule.api.transport.PropertyScope;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.config.i18n.Message;
-import org.mule.transaction.TransactionTemplate;
+import org.mule.execution.TransactionalErrorHandlingExecutionTemplate;
 import org.mule.transport.AbstractMessageDispatcher;
 
 import com.gigaspaces.document.DocumentProperties;
@@ -63,42 +65,41 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
     }
     
     private MuleMessage dispatchMessage(final MuleEvent event, boolean doSend) throws Exception
-    {
-        final EndpointURI endpointUri = event.getEndpoint().getEndpointURI();
+    {	
+        final EndpointURI endpointUri = endpoint.getEndpointURI();
 
         if (endpointUri == null) {
             Message objectIsNull = CoreMessages.objectIsNull("Endpoint");
             DispatchException ex = null;
-            if (event.getEndpoint() instanceof MessageProcessor) {
-                ex = new DispatchException(objectIsNull, event, (MessageProcessor) event.getEndpoint(), new Exception());
+            if (endpoint instanceof MessageProcessor) {
+                ex = new DispatchException(objectIsNull, event, (MessageProcessor) endpoint, new Exception());
             } else {
                 ex = new DispatchException(objectIsNull, event, null, new Exception());
             }
             throw ex;
         }
         final OpenSpacesQueueMessageReceiver receiver = connector.getReceiver(endpointUri);
-        TransactionTemplate tt;
-        if (receiver == null) {
-            tt = new TransactionTemplate(event.getEndpoint().getTransactionConfig(), event.getMuleContext());
-        } else {
-            tt = new TransactionTemplate(receiver.getEndpoint().getTransactionConfig(), event.getMuleContext());
-        }
+	
+		final TransactionConfig transactionConfig = receiver == null ? endpoint.getTransactionConfig() : receiver.getEndpoint()
+				.getTransactionConfig();
+		final ExecutionTemplate<MuleEvent> executionTemplate = TransactionalErrorHandlingExecutionTemplate
+				.createMainExecutionTemplate(event.getMuleContext(), transactionConfig);
 
         connector.getSessionHandler().storeSessionInfoToMessage(event.getSession(), event.getMessage());
 
         //handle transactional operations - don't put on queue - just execute recursively
         // note - transactions works only in the same mule scope.
-        boolean isTransactional = event.getEndpoint().getTransactionConfig().isTransacted();
-        if (isTransactional && receiver != null) {
-
-            TransactionCallback cb = new TransactionCallback() {
-                public Object doInTransaction() throws Exception {
-                    return receiver.onCall(event.getMessage(),true);
-                }
-            };
-            MuleEvent muleEvent = (MuleEvent) tt.execute(cb);
-            return (MuleMessage) muleEvent.getMessage();
-        }
+		boolean isTransactional = endpoint.getTransactionConfig().isTransacted();
+		if (isTransactional && receiver != null) {
+			ExecutionCallback<MuleEvent> executionCallback = new ExecutionCallback<MuleEvent>() {
+				@Override
+				public MuleEvent process() throws Exception {
+					return (MuleEvent) receiver.onCall(event.getMessage(), true);
+				}
+			};
+			MuleEvent muleEvent = executionTemplate.execute(executionCallback);
+			return muleEvent != null ? muleEvent.getMessage() : null;
+		}
         
         //check if a response should be returned for this endpoint
         boolean returnResponse = returnResponse(event, doSend) && !isTransactional;
@@ -109,21 +110,20 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         MuleMessage message = event.getMessage();
         connector.getSessionHandler().storeSessionInfoToMessage(event.getSession(), message);
 
-        TransactionCallback cb = new TransactionCallback()
-        {
-            public Object doInTransaction() throws Exception
-            {
-                OpenSpacesQueueObject entry = prepareMessageForDispatch(event.getMessage(), endpointUri, correlationId);
+		final ExecutionCallback<MuleEvent> executionCallback = new ExecutionCallback<MuleEvent>() {
+			@Override
+			public MuleEvent process() throws Exception {
+				OpenSpacesQueueObject entry = prepareMessageForDispatch(
+						event.getMessage(), endpointUri, correlationId);
+				connector.getGigaSpaceObj().write(entry);
+				return null;
+			}
+		};
 
-                connector.getGigaSpaceObj().write(entry);
-                return null;
-            }
-        };
-        
-        tt.execute(cb); 
+		executionTemplate.execute(executionCallback);
         
         if (logger.isDebugEnabled()) {
-            logger.debug("sent event on endpointUri: " + event.getEndpoint().getEndpointURI());
+            logger.debug("sent event on endpointUri: " + endpoint.getEndpointURI());
         }
         
         // wait for reply if configured
@@ -157,7 +157,7 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
     }
     
     private MuleMessage waitForResponse(final MuleEvent event, final String correlationId) {
-        String replyTo = event.getEndpoint().getEndpointURI().getAddress() + DEFAULT_RESPONSE_QUEUE;
+        String replyTo = endpoint.getEndpointURI().getAddress() + DEFAULT_RESPONSE_QUEUE;
         
         int timeout = event.getTimeout();
         

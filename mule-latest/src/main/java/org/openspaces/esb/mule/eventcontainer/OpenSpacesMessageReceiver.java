@@ -27,15 +27,18 @@ import org.mule.api.MuleRuntimeException;
 import org.mule.api.construct.FlowConstruct;
 import org.mule.api.endpoint.ImmutableEndpoint;
 import org.mule.api.endpoint.InboundEndpoint;
+import org.mule.api.exception.MessagingExceptionHandler;
+import org.mule.api.execution.ExecutionCallback;
+import org.mule.api.execution.ExecutionTemplate;
 import org.mule.api.lifecycle.CreateException;
 import org.mule.api.service.Service;
 import org.mule.api.transaction.Transaction;
-import org.mule.api.transaction.TransactionCallback;
 import org.mule.api.transaction.TransactionException;
 import org.mule.api.transport.Connector;
 import org.mule.api.transport.MuleMessageFactory;
 import org.mule.config.i18n.CoreMessages;
-import org.mule.transaction.TransactionTemplate;
+import org.mule.exception.DefaultMessagingExceptionStrategy;
+import org.mule.execution.TransactionalErrorHandlingExecutionTemplate;
 import org.mule.transport.AbstractMessageReceiver;
 import org.mule.transport.AbstractReceiverWorker;
 import org.openspaces.core.GigaSpace;
@@ -54,7 +57,8 @@ import org.springframework.transaction.TransactionStatus;
 public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implements SpaceDataEventListener {
 
     private static final String ENDPOINT_PARAM_WORK_MANAGER = "workManager";
-
+    private static final MessagingExceptionHandler exceptionHandler = new DefaultMessagingExceptionStrategy();
+    
     private AbstractEventListenerContainer eventListenerContainer;
 
     private boolean workManager = false;
@@ -134,18 +138,20 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
     public void onEvent(final Object data, final GigaSpace gigaSpace, final TransactionStatus txStatus, final Object source) {
 
         if (txStatus != null) {
-            TransactionTemplate<Object> tt = new TransactionTemplate<Object>(endpoint.getTransactionConfig(),
-                    connector.getMuleContext());
+			final ExecutionTemplate<MuleEvent> executionTemplate = TransactionalErrorHandlingExecutionTemplate
+					.createMainExecutionTemplate(connector.getMuleContext(),
+							endpoint.getTransactionConfig());
             try {
                 if (disposed) {
                     txStatus.setRollbackOnly();
                     return;
                 }
-                tt.execute(new TransactionCallback<Object>() {
-                    public Object doInTransaction() throws Exception {
-                        doReceiveEvent(data, gigaSpace, txStatus, source);
-                        return null;
-                    }
+                executionTemplate.execute(new ExecutionCallback<MuleEvent>() {
+                	@Override
+                	public MuleEvent process() throws Exception {
+                		doReceiveEvent(data, gigaSpace, txStatus, source);
+                		return null;
+                	}
                 });
             } catch (Exception e) {
                 txStatus.setRollbackOnly();
@@ -157,7 +163,7 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
             try {
                 doReceiveEvent(data, gigaSpace, txStatus, source);
             } catch (Exception e) {
-                endpoint.getConnector().handleException(e);
+            	getConnector().getMuleContext().handleException(e);
             }
         }
     }

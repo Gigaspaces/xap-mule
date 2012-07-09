@@ -35,7 +35,7 @@ public class EchoeTxXARollBackComponentAppender implements Callable {
             return eventContext.getMessage().getPayload() + eventContext.getFlowConstruct().getName();
         } else {
             alreadyRollbacked = true;
-            throw new Error("Rolling back (-:");
+            throw new RuntimeException("Rolling back (-:");
         }
     }
 }
