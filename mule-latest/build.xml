@@ -78,8 +78,8 @@
             <classpath refid="all-libs"/>
         </javac>
 
-        <copy todir="${target.classes.dir}" preservelastmodified="true">
-            <fileset dir="${main.src.resources.dir}">
+    	<copy todir="${target.classes.dir}" preservelastmodified="true">
+            <fileset dir="${main.src.dir}">
                 <include name="**/*.properties"/>
                 <include name="**/*.handlers"/>
                 <include name="**/*.schemas"/>
@@ -105,10 +105,12 @@
         <jar jarfile="${lib.dir}/optional/openspaces/mule-os.jar">
         	<fileset dir="${target.classes.dir}">
                 <include name="org/openspaces/esb/mule/**"/>
-                <include name="META-INF/services/org/mule/**"/>
+            </fileset>
+        	<fileset dir="${main.src.resources.dir}">
+        		<include name="META-INF/services/org/mule/**"/>
                 <include name="META-INF/spring.handlers"/>
                 <include name="META-INF/spring.schemas"/>
-            </fileset>
+        	</fileset>
             <manifest>
                 <attribute name="Implementation-Title" value="${mule.title}"/>
             </manifest>
