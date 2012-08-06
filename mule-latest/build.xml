@@ -186,6 +186,10 @@
 
             <!-- Need files loaded as resources -->
             <classpath location="${main.test.dir}"/>
+        	
+        	<!-- Test resources -->
+        	<classpath location="${main.test.resources.dir}"/>
+
 
             <classpath refid="all-libs"/>
 
