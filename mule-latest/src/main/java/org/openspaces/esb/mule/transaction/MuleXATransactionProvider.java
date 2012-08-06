@@ -1,26 +1,34 @@
 package org.openspaces.esb.mule.transaction;
 
-import com.gigaspaces.internal.client.spaceproxy.ISpaceProxy;
-import com.j_spaces.core.IJSpace;
-import com.j_spaces.core.client.LocalTransactionManager;
-import com.j_spaces.core.client.XAResourceImpl;
+import java.rmi.RemoteException;
+
+import javax.transaction.xa.XAException;
+import javax.transaction.xa.XAResource;
+import javax.transaction.xa.Xid;
+
 import net.jini.core.transaction.Transaction;
+import net.jini.core.transaction.TransactionException;
+
 import org.mule.transaction.TransactionCoordination;
 import org.mule.transaction.XaTransaction;
 import org.openspaces.core.TransactionDataAccessException;
 import org.openspaces.core.transaction.TransactionProvider;
 import org.springframework.transaction.TransactionDefinition;
 
-import javax.transaction.xa.XAException;
-import javax.transaction.xa.XAResource;
-import javax.transaction.xa.Xid;
-import java.rmi.RemoteException;
+import com.gigaspaces.client.transaction.DistributedTransactionManagerProvider;
+import com.gigaspaces.internal.client.spaceproxy.ISpaceProxy;
+import com.j_spaces.core.IJSpace;
+import com.j_spaces.core.client.XAResourceImpl;
 
 /**
  * @author kimchy (Shay Banon)
  */
 public class MuleXATransactionProvider implements TransactionProvider {
 
+    private DistributedTransactionManagerProvider distributedTransactionManagerProvider;
+    
+    private final Object distributedTransactionManagerProviderLock = new Object();
+    
     public Transaction.Created getCurrentTransaction(Object transactionalContext, IJSpace space) {
         org.mule.api.transaction.Transaction tx = TransactionCoordination.getInstance().getTransaction();
         if (!(tx instanceof XaTransaction)) {
@@ -31,13 +39,20 @@ public class MuleXATransactionProvider implements TransactionProvider {
             // already bound the space, return
             return ((CustomXaResource) xaTransaction.getResource(space)).transaction;
         }
-        LocalTransactionManager localTxManager;
-        try {
-            localTxManager = (LocalTransactionManager) LocalTransactionManager.getInstance(space);
-        } catch (RemoteException e) {
-            throw new TransactionDataAccessException("Failed to get local transaction manager for space [" + space + "]", e);
-        }
-        CustomXaResource xaResourceSpace = new CustomXaResource(new XAResourceImpl(localTxManager, space));
+        if (distributedTransactionManagerProvider == null)
+            
+            if (distributedTransactionManagerProvider == null) {
+                synchronized(distributedTransactionManagerProviderLock) {
+                    if (distributedTransactionManagerProvider == null) {
+                        try {
+                            distributedTransactionManagerProvider = new DistributedTransactionManagerProvider();
+                        } catch (TransactionException e) {
+                            throw new TransactionDataAccessException("Failed to get local transaction manager for space [" + space + "]", e);
+                        }
+                    }
+                }
+            }
+        CustomXaResource xaResourceSpace = new CustomXaResource(new XAResourceImpl(distributedTransactionManagerProvider.getTransactionManager(), space));
 
         // enlist the Space xa resource with the current JTA transaction
         // we rely on the fact that this call will start the XA transaction
@@ -63,6 +78,14 @@ public class MuleXATransactionProvider implements TransactionProvider {
 
     public boolean isEnabled() {
         return true;
+    }
+    
+    public void destroy() throws RemoteException {
+        synchronized(distributedTransactionManagerProviderLock)
+        {
+            if (distributedTransactionManagerProvider != null)
+                distributedTransactionManagerProvider.destroy();
+        }
     }
 
     private static class CustomXaResource implements XAResource {
