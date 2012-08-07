@@ -88,10 +88,8 @@
                 <include name="**/*.xsd"/>
                 <include name="**/*.groovy"/>
             </fileset>
-        </copy>
-    	
-    	<copy todir="${target.classes.dir}" preservelastmodified="true">
-            <fileset dir="${main.src.resources.dir}">
+    		
+    		<fileset dir="${main.src.resources.dir}">
                 <include name="**/*.properties"/>
                 <include name="**/*.handlers"/>
                 <include name="**/*.schemas"/>
