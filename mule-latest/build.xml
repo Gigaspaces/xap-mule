@@ -91,7 +91,7 @@
         </copy>
     	
     	<copy todir="${target.classes.dir}" preservelastmodified="true">
-            <fileset dir="${main.test.resources.dir}">
+            <fileset dir="${main.src.resources.dir}">
                 <include name="**/*.properties"/>
                 <include name="**/*.handlers"/>
                 <include name="**/*.schemas"/>
