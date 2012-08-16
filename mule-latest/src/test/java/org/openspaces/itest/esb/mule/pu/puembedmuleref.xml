@@ -33,7 +33,7 @@
 
 
     <!--
-        A polling event container that perfoms (by default) polling take operations against
+        A polling event container that performs (by default) polling take operations against
         the space using the provided template (in our case, and the non processed data objects).
         Once a match is found, the data processor bean event listener is triggered using the
         annotation adapter.
