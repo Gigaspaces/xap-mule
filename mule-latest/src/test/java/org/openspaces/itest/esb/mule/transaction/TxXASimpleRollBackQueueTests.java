@@ -16,6 +16,7 @@ public class TxXASimpleRollBackQueueTests extends AbstractMuleTests {
         muleClient.dispatch("os-queue://test1", "testme", null);
 
         MuleMessage message = muleClient.request("os-queue://test3", 5000);
+        assertNotNull(message);
         assertEquals("testmeAppender1Appender2", message.getPayload());
     }
 
