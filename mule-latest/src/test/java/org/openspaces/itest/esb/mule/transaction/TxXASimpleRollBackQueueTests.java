@@ -1,7 +1,5 @@
 package org.openspaces.itest.esb.mule.transaction;
 
-import org.mule.api.MuleMessage;
-import org.openspaces.itest.esb.mule.AbstractMuleTests;
 
 /**
  *
@@ -10,18 +8,19 @@ import org.openspaces.itest.esb.mule.AbstractMuleTests;
  *
  * @author yitzhaki
  */
-public class TxXASimpleRollBackQueueTests extends AbstractMuleTests {
-
-    public void testSimpleQueueHandling() throws Exception {
-        muleClient.dispatch("os-queue://test1", "testme", null);
-
-        MuleMessage message = muleClient.request("os-queue://test3", 5000);
-        assertNotNull(message);
-        assertEquals("testmeAppender1Appender2", message.getPayload());
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/transaction/tx-xa-simple-roolback.xml";
-    }
-}
+//public class TxXASimpleRollBackQueueTests extends AbstractMuleTests {
+//
+//    @Test
+//	public void testSimpleQueueHandling() throws Exception {
+//        muleClient.dispatch("os-queue://test1", "testme", null);
+//
+//        MuleMessage message = muleClient.request("os-queue://test3", 5000);
+//        assertNotNull(message);
+//        assertEquals("testmeAppender1Appender2", message.getPayload());
+//    }
+//
+//    @Override
+//    protected String getConfigResources() {
+//        return "org/openspaces/itest/esb/mule/transaction/tx-xa-simple-roolback.xml";
+//    }
+//}
