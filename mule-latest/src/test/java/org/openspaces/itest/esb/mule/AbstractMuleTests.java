@@ -15,6 +15,8 @@
  */
 package org.openspaces.itest.esb.mule;
 
+import java.util.concurrent.TimeUnit;
+
 import org.mule.module.client.MuleClient;
 import org.mule.tck.FunctionalTestCase;
 import org.openspaces.core.GigaSpace;
@@ -47,5 +49,23 @@ public abstract class AbstractMuleTests extends FunctionalTestCase {
     protected String getSpaceName() {
         return "space";
     }
+    
+	protected static void repetitiveAssert(Runnable runnable, long timeout, TimeUnit timeUnit) {
+		final long time = System.currentTimeMillis();
+		final long timeoutInMilliseconds = timeUnit.toMillis(timeout);
+		do {
+			try {
+				runnable.run();
+				return;
+			} catch (AssertionError e) {
+				try {
+					Thread.sleep(10);
+				} catch (Exception ee) {					
+				}
+			}
+		} while (System.currentTimeMillis() - time < timeoutInMilliseconds);
+		runnable.run();
+	}
+
 
 }

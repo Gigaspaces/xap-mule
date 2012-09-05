@@ -16,10 +16,7 @@
 
 package org.openspaces.esb.mule.queue;
 
-import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 
 import org.openspaces.core.util.ThreadLocalMarshaller;
 
@@ -27,11 +24,11 @@ import com.gigaspaces.annotation.pojo.FifoSupport;
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceDynamicProperties;
 import com.gigaspaces.annotation.pojo.SpaceExclude;
+import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceIndex;
 import com.gigaspaces.annotation.pojo.SpacePersist;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
 import com.gigaspaces.document.DocumentProperties;
-import com.gigaspaces.internal.io.IOUtils;
 
 /**
  * An internal queue entry holding the endpoint address and the queue payload. The payload can be
@@ -41,11 +38,10 @@ import com.gigaspaces.internal.io.IOUtils;
  * @author anna
  */
 @SpaceClass(replicate = true,fifoSupport=FifoSupport.OPERATION)
-public class OpenSpacesQueueObject implements Externalizable {
+public class OpenSpacesQueueObject {
 
-    private static final long serialVersionUID = 1L;
-
-    private String endpointURI;
+	private String id;
+	private String endpointURI;
 
     private Object internalPayload;
 
@@ -59,6 +55,16 @@ public class OpenSpacesQueueObject implements Externalizable {
     public OpenSpacesQueueObject() {
     }
 
+    @SpaceRouting
+    @SpaceId(autoGenerate = true)
+    public String getId() {
+		return id;
+	}
+    
+    public void setId(String id) {
+		this.id = id;
+	}
+    
     public void setEndpointURI(String endpointURI) {
         this.endpointURI = endpointURI;
     }
@@ -106,7 +112,6 @@ public class OpenSpacesQueueObject implements Externalizable {
         this.payloadMetaData = payloadMetaData;
     }
 
-    @SpaceRouting
     public String getCorrelationID() {
         return correlationID;
     }
@@ -122,22 +127,6 @@ public class OpenSpacesQueueObject implements Externalizable {
 
     public void setPersistent(boolean isPersistent) {
         this.isPersistent = isPersistent;
-    }
-
-    public void writeExternal(ObjectOutput out) throws IOException {
-        IOUtils.writeString(out, endpointURI);
-        IOUtils.writeString(out, correlationID);
-        out.writeBoolean(isPersistent);
-        IOUtils.writeObject(out, internalPayload);
-        IOUtils.writeObject(out, payloadMetaData);
-    }
-
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        endpointURI = IOUtils.readString(in);
-        correlationID = IOUtils.readString(in);
-        isPersistent = in.readBoolean();
-        internalPayload = IOUtils.readObject(in);
-        payloadMetaData = IOUtils.readObject(in);
     }
 
     @Override
