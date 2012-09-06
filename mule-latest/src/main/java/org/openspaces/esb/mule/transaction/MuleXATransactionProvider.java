@@ -39,19 +39,17 @@ public class MuleXATransactionProvider implements TransactionProvider {
             // already bound the space, return
             return ((CustomXaResource) xaTransaction.getResource(space)).transaction;
         }
-        if (distributedTransactionManagerProvider == null)
-            
-            if (distributedTransactionManagerProvider == null) {
-                synchronized(distributedTransactionManagerProviderLock) {
-                    if (distributedTransactionManagerProvider == null) {
-                        try {
-                            distributedTransactionManagerProvider = new DistributedTransactionManagerProvider();
-                        } catch (TransactionException e) {
-                            throw new TransactionDataAccessException("Failed to get local transaction manager for space [" + space + "]", e);
-                        }
-                    }
-                }
-            }
+        if (distributedTransactionManagerProvider == null) {
+        	synchronized(distributedTransactionManagerProviderLock) {
+        		if (distributedTransactionManagerProvider == null) {
+        			try {
+        				distributedTransactionManagerProvider = new DistributedTransactionManagerProvider();
+        			} catch (TransactionException e) {
+        				throw new TransactionDataAccessException("Failed to get local transaction manager for space [" + space + "]", e);
+        			}
+        		}
+        	}
+        }
         CustomXaResource xaResourceSpace = new CustomXaResource(new XAResourceImpl(distributedTransactionManagerProvider.getTransactionManager(), space));
 
         // enlist the Space xa resource with the current JTA transaction
