@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>mule-latest</groupId>
+	<artifactId>mule-latest</artifactId>
+	<version>9.1.0-SNAPSHOT</version>
+	<properties>
+		<muleVersion>3.3.0</muleVersion>
+	</properties>
+	<repositories>
+		<repository>
+			<id>mule-deps</id>
+			<name>Mule Dependencies</name>
+			<url>http://dist.codehaus.org/mule/dependencies/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-annotations</artifactId>
+			<version>${muleVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-client</artifactId>
+			<version>${muleVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-spring-config</artifactId>
+			<version>${muleVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-spring-extras</artifactId>
+			<version>${muleVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-jbossts</artifactId>
+			<version>${muleVersion}</version>
+		</dependency>
+	</dependencies>
+</project>
