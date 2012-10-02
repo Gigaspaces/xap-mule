@@ -23,7 +23,7 @@ import org.openspaces.itest.esb.mule.SimpleMessage;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 /**
- * Test the ability to run PU with mule imbedded in it.
+ * Test the ability to run PU with mule embedded in it.
  *
  * @author yitzhaki
  */
