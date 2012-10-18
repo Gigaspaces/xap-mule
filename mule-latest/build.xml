@@ -136,9 +136,15 @@
 	        </fileset>
 	    </copy>
 	</target>
+	
+	<target name="install.maven" description="Copy over schema files">
+		<exec executable="mvn"> 
+			<arg line="install:install-file -DgroupId=com.gigaspaces -DartifactId=mule-os -DcreateChecksum=true -Dversion=${productversion} -Dpackaging=jar -DpomFile=${openspaces.dir.mule}/maven.tmp.dir/mule-os-pom.xml -Dfile=${lib.dir}/optional/openspaces/mule-os.jar"/>
+		</exec>
+	</target>
 
 
-    <target name="dist" depends="build, fulljar, schema"
+    <target name="dist" depends="build, fulljar, install.maven, schema"
             description="Creates the OpenSpaces distribution">
         <mkdir dir="${dist.dir}"/>
         <delete file="${dist.dir}/${mule.name}.zip"/>
