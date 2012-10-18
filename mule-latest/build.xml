@@ -5,7 +5,13 @@
     <property file="project.properties"/>
 	<property environment="env"/>
 
+	<condition property="mvn.executable" value="mvn.bat">
+            <os family="windows" />
+    </condition>
 
+    <condition property="mvn.executable" value="mvn">
+            <os family="unix" />
+    </condition>
 	
     <path id="all-libs">
         <fileset dir="${lib.dir}">
@@ -138,7 +144,7 @@
 	</target>
 	
 	<target name="install.maven" description="Copy over schema files">
-		<exec executable="mvn"> 
+		<exec executable="${env.M2_HOME}\bin\${mvn.executable}"> 
 			<arg line="install:install-file -DgroupId=com.gigaspaces -DartifactId=mule-os -DcreateChecksum=true -Dversion=${productversion} -Dpackaging=jar -DpomFile=${openspaces.dir.mule}/maven.tmp.dir/mule-os-pom.xml -Dfile=${lib.dir}/optional/openspaces/mule-os.jar"/>
 		</exec>
 	</target>
