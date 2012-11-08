@@ -19,6 +19,8 @@ package org.openspaces.itest.esb.mule.message;
 import org.openspaces.esb.mule.message.AbstractMessageHeader;
 import org.openspaces.itest.esb.mule.Message;
 
+import com.gigaspaces.annotation.pojo.SpaceId;
+
 /**
  * A simple message object that is written to the space. Note, this
  * message uses GigaSpaces support for POJO entries. With GigaSpaces
@@ -33,7 +35,7 @@ import org.openspaces.itest.esb.mule.Message;
 public class MessageWithMessageHeader extends AbstractMessageHeader implements Message {
 
     private String message;
-
+    private String id;
     private boolean read;
 
     public MessageWithMessageHeader() {
@@ -43,8 +45,17 @@ public class MessageWithMessageHeader extends AbstractMessageHeader implements M
         this.message = message;
         setUniqueId(id);
     }
+    
+    @SpaceId(autoGenerate = true)
+    public String getId() {
+		return id;
+	}
 
-    public String getMessage() {
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
         return message;
     }
 

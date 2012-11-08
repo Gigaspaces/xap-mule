@@ -18,6 +18,8 @@ package org.openspaces.itest.esb.mule.message;
 import org.openspaces.esb.mule.message.AbstractMessageHeader;
 import org.openspaces.itest.esb.mule.Message;
 
+import com.gigaspaces.annotation.pojo.SpaceId;
+
 /**
  * A simple message object that is written to the space.
  * This object also carrying with it metadata.
@@ -29,7 +31,8 @@ import org.openspaces.itest.esb.mule.Message;
 public class ProcessedMessage extends AbstractMessageHeader implements Message {
 
     private String message;
-
+    private String id;
+    
     public ProcessedMessage() {
     }
 
@@ -37,7 +40,16 @@ public class ProcessedMessage extends AbstractMessageHeader implements Message {
         this.message = message;
     }
 
-    public String getMessage() {
+    @SpaceId(autoGenerate = true)
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
         return message;
     }
 

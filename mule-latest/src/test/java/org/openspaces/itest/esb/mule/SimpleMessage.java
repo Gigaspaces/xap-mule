@@ -16,6 +16,8 @@
 
 package org.openspaces.itest.esb.mule;
 
+import com.gigaspaces.annotation.pojo.SpaceId;
+
 /**
  * A simple message object that is written to the space. Note, this
  * message uses GigaSpaces support for POJO entries. With GigaSpaces
@@ -28,7 +30,7 @@ package org.openspaces.itest.esb.mule;
 public class SimpleMessage implements Message{
 
     private String message;
-
+    private String id;
     private boolean read;
 
     public SimpleMessage() {
@@ -43,7 +45,16 @@ public class SimpleMessage implements Message{
         this.read = read;
     }
 
-    public String getMessage() {
+    @SpaceId(autoGenerate = true)
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
         return message;
     }
 

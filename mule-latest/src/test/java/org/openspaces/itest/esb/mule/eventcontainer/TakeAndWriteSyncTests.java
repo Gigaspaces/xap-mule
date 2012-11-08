@@ -23,6 +23,8 @@ import org.mule.api.lifecycle.Callable;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.esb.mule.Message;
 
+import com.gigaspaces.annotation.pojo.SpaceId;
+
 /**
  * Tests mule connector, receive and process single object at a time.
  *
@@ -58,7 +60,7 @@ public class TakeAndWriteSyncTests extends AbstractMuleTests {
         private static final long serialVersionUID = 1L;
         
         private String message;
-
+        private String id;
         private boolean read;
         private int stage;
 
@@ -74,9 +76,16 @@ public class TakeAndWriteSyncTests extends AbstractMuleTests {
             return read;
         }
 
+        @SpaceId(autoGenerate = true)
+        public String getId() {
+			return id;
+		}
 
+		public void setId(String id) {
+			this.id = id;
+		}
 
-        public void setRead(boolean read) {
+		public void setRead(boolean read) {
             this.read = read;
         }
 
