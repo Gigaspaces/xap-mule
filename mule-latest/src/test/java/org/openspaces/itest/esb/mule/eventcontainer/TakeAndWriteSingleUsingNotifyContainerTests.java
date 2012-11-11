@@ -41,7 +41,7 @@ public class TakeAndWriteSingleUsingNotifyContainerTests extends AbstractMuleTes
             SimpleMessage message = gigaSpace.take(template, TIMEOUT);
             assertEquals(template, message);
         }
-        assertEquals(numberOfMsgs, gigaSpace.count(new SimpleMessage(null, false)));
+        assertEquals(0, gigaSpace.count(new SimpleMessage(null, false)));
         assertEquals(0, gigaSpace.count(new SimpleMessage(null, true)));
     }
 
