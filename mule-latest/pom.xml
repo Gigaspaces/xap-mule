@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mule-latest</groupId>
 	<artifactId>mule-latest</artifactId>
-	<version>9.1.0-SNAPSHOT</version>
+	<version>9.5.0-SNAPSHOT</version>
 	<properties>
 		<muleVersion>3.3.0</muleVersion>
 	</properties>
@@ -16,9 +16,28 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+		<repository>
+			<id>org.openspaces</id>
+			<name>OpenSpaces</name>
+			<url>http://maven-repository.openspaces.org</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>com.gigaspaces</groupId>
+			<artifactId>gs-openspaces</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-module-annotations</artifactId>
