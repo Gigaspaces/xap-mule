@@ -136,7 +136,6 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
      * @param source    Optional additional data or the actual source event data object (where relevant)
      */
     public void onEvent(final Object data, final GigaSpace gigaSpace, final TransactionStatus txStatus, final Object source) {
-        System.out.println("Received event: " + data);
 
         if (txStatus != null) {
 			final ExecutionTemplate<MuleEvent> executionTemplate = TransactionalErrorHandlingExecutionTemplate
@@ -159,13 +158,11 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
             }
         } else {
             if (disposed) {
-                System.out.println("Mule is disposed");
                 return;
             }
             try {
                 doReceiveEvent(data, gigaSpace, txStatus, source);
             } catch (Exception e) {
-                e.printStackTrace();
             	getConnector().getMuleContext().handleException(e);
             }
         }
@@ -177,7 +174,6 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
         } else {
             MuleMessageFactory factory = connector.getMuleMessageFactory();
             MuleMessage message = factory.create(data, endpoint.getEncoding());
-            System.out.println("Routing message to Mule");
             MuleEvent muleEvent = routeMessage(message);
             
             //write response 
