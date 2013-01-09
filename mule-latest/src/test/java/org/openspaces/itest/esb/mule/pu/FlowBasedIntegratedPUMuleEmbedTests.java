@@ -16,11 +16,13 @@
 
 package org.openspaces.itest.esb.mule.pu;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
 import org.openspaces.itest.esb.mule.SimpleMessage;
+import org.openspaces.itest.utils.TestUtils;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 
@@ -36,21 +38,22 @@ public class FlowBasedIntegratedPUMuleEmbedTests extends TestCase {
         provider.addConfigLocation("org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml");
         IntegratedProcessingUnitContainer container = (IntegratedProcessingUnitContainer) provider.createContainer();
 
-        GigaSpace gigaSpace = new GigaSpaceConfigurer(new UrlSpaceConfigurer("jini://*/*/space").lookupGroups(System.getProperty("user.name")).space()).gigaSpace();
+        final GigaSpace gigaSpace = new GigaSpaceConfigurer(new UrlSpaceConfigurer("jini://*/*/space").lookupGroups(System.getProperty("user.name")).space()).gigaSpace();
 
-        int numberOfMsgs = 22;
+        final int numberOfMsgs = 22;
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage message = new SimpleMessage("Hello World " + i, false);
             gigaSpace.write(message);
         }
 
-        //blocking wait untill the mule writes back the messages to the space after reading them.
-        for (int i = 0; i < numberOfMsgs; i++) {
-            SimpleMessage template = new SimpleMessage("Hello World " + i, true);
-            SimpleMessage message = gigaSpace.take(template, 5000);
-            assertNotNull(message);
-        }
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
+        final SimpleMessage template = new SimpleMessage(true);
+        TestUtils.repetitive(new Runnable() {
+            @Override
+            public void run() {
+                int count = gigaSpace.count(template);
+                Assert.assertEquals(numberOfMsgs, count);
+            }
+        }, 10000);
 
         container.close();
     }

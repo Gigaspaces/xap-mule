@@ -16,6 +16,7 @@
 
 package org.openspaces.esb.mule.eventcontainer;
 
+import com.j_spaces.core.LeaseContext;
 import com.j_spaces.core.client.UpdateModifiers;
 import net.jini.core.lease.Lease;
 import net.jini.space.JavaSpace;
@@ -103,6 +104,7 @@ public class OpenSpacesMessageDispatcher extends AbstractMessageDispatcher {
     }
 
     protected void doDispatch(MuleEvent event) throws Exception {
+        System.out.println("doDispatch invoked.");
         doSend(event);
     }
 
@@ -110,6 +112,7 @@ public class OpenSpacesMessageDispatcher extends AbstractMessageDispatcher {
         
         Object payload = event.getMessage().getPayload();
 
+        System.out.println("Writing payload: " + payload);
         if (payload != null) {
             int updateModifiers = updateOrWrite ? UpdateModifiers.UPDATE_OR_WRITE : UpdateModifiers.WRITE_ONLY; 
             if (payload instanceof Object[]) {
