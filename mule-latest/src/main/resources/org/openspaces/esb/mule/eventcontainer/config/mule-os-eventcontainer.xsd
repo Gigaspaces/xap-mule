@@ -16,7 +16,7 @@
 
     <xsd:complexType name="osConnectorType">
         <xsd:complexContent>
-            <xsd:extension base="mule:connectorType">
+            <xsd:extension base="mule:transactedConnectorType">
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
