@@ -43,13 +43,15 @@
                 </spring:bean>
             </os-core:template>
         </os-events:polling-container>
+
     </spring:beans>
 
 
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
 
-    <flow name="helloSample">
+    <flow name="helloSample" processingStrategy="synchronous">
     	<inbound-endpoint address="os-eventcontainer://helloPollingEventContainer"/>
+        <logger message="Mule Message Received" />
     	<component class="org.openspaces.itest.esb.mule.MessageReader"/>
     	<outbound-endpoint address="os-eventcontainer://gigaSpace?updateOrWrite=false"/>
     </flow>
