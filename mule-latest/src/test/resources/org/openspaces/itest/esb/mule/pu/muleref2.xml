@@ -48,6 +48,12 @@
 
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
 
+    <configuration>
+        <default-dispatcher-threading-profile doThreading="false" />
+        <default-receiver-threading-profile doThreading="false" />
+        <default-service-threading-profile doThreading="false" />
+    </configuration>
+
     <model name="helloSample">
         <service name="MessageReaderUMO">
             <inbound>
@@ -59,7 +65,7 @@
             <outbound>
                 <pass-through-router>
                     <outbound-endpoint
-                            address="os-eventcontainer://gigaSpace?writeLease=2000&amp;updateOrWrite=false&amp;updateTimeout=1"/>
+                            address="os-eventcontainer://gigaSpace"/>
                 </pass-through-router>
             </outbound>
         </service>
