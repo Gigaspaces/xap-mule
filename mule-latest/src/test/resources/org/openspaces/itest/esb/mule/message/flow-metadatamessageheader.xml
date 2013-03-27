@@ -45,7 +45,7 @@
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
 
    
-    <flow name="helloSample">
+    <flow name="helloSample" processingStrategy="synchronous">
     	<os-eventcontainer:inbound-endpoint address="os-eventcontainer://helloPollingEventContainer"/>
     	<component class="org.openspaces.itest.esb.mule.message.MessageWithHeaderReader"/>
     	<outbound-endpoint address="os-eventcontainer://gigaSpace"/>

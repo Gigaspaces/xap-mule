@@ -53,7 +53,7 @@
     <!-- this connector must be declared ,in order to inject the  Spring appliction context -->
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
     
-    <flow name="helloSample">
+    <flow name="helloSample" processingStrategy="synchronous">
         <inbound-endpoint address="os-eventcontainer://helloPollingEventContainer?workManager=true" exchange-pattern="request-response"/>
         <component class="org.openspaces.itest.esb.mule.MessageReader"/>
         <outbound-endpoint address="os-eventcontainer://gigaSpace?writeLease=2000&amp;updateOrWrite=false&amp;updateTimeout=1" />
