@@ -51,12 +51,6 @@
     <!-- MessageTransformer in order to transfer the metadata from the UMOmessage to the dispatched object -->
     <custom-transformer name="MessageTransformer" class="org.openspaces.itest.esb.mule.message.MessageTransformer"/>
 
-    <configuration>
-        <default-dispatcher-threading-profile doThreading="false" />
-        <default-receiver-threading-profile doThreading="false" />
-        <default-service-threading-profile doThreading="false" />
-    </configuration>
-
     <model name="helloSample">
 
 

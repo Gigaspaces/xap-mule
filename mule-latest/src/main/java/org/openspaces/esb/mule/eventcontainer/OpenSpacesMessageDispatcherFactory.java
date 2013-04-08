@@ -17,13 +17,9 @@
 package org.openspaces.esb.mule.eventcontainer;
 
 import org.mule.api.MuleException;
-import org.mule.api.endpoint.ImmutableEndpoint;
 import org.mule.api.endpoint.OutboundEndpoint;
 import org.mule.api.transport.MessageDispatcher;
 import org.mule.transport.AbstractMessageDispatcherFactory;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Creates new instances of {@link OpenSpacesMessageDispatcher} for each unique endpoint.
@@ -32,16 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class OpenSpacesMessageDispatcherFactory extends AbstractMessageDispatcherFactory {
     
-    private Map<ImmutableEndpoint, OpenSpacesMessageDispatcher> dispatcherMap =
-            new ConcurrentHashMap<ImmutableEndpoint, OpenSpacesMessageDispatcher>();
-
-
     public MessageDispatcher create(OutboundEndpoint endpoint) throws MuleException {
-        OpenSpacesMessageDispatcher spacesMessageDispatcher = dispatcherMap.get(endpoint);
-        if (spacesMessageDispatcher == null) {
-            spacesMessageDispatcher = new OpenSpacesMessageDispatcher(endpoint);
-            dispatcherMap.put(endpoint, spacesMessageDispatcher);
-        }
-        return spacesMessageDispatcher;
+        return new OpenSpacesMessageDispatcher(endpoint);
     }
 }

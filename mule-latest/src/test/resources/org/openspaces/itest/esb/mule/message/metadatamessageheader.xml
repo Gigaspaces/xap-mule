@@ -44,12 +44,6 @@
     <!-- this connector must be declared ,in order to inject the  Spring appliction context -->
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
 
-    <configuration>
-        <default-dispatcher-threading-profile doThreading="false" />
-        <default-receiver-threading-profile doThreading="false" />
-        <default-service-threading-profile doThreading="false" />
-    </configuration>
-
     <!--The Mule model initialises and manages your UMO components-->
     <model name="helloSample">
         <service name="MessageReader">

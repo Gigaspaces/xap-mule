@@ -17,7 +17,7 @@ package org.openspaces.esb.mule.transformers;
 
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
-import org.mule.transformer.AbstractMessageAwareTransformer;
+import org.mule.transformer.AbstractMessageTransformer;
 import org.openspaces.esb.mule.message.MessageHeader;
 
 import java.util.Iterator;
@@ -33,9 +33,10 @@ import java.util.Iterator;
  *
  * @author yitzhaki
  */
-public class OpenSpacesTransformer extends AbstractMessageAwareTransformer {
+public class OpenSpacesTransformer extends AbstractMessageTransformer {
 
-    public Object transform(MuleMessage message, String outputEncoding) throws TransformerException {
+    @Override
+    public Object transformMessage(MuleMessage message, String outputEncoding) throws TransformerException {
         Object result = getResultPayload(message, outputEncoding);
         copyMetaData(message, result);
         return result;

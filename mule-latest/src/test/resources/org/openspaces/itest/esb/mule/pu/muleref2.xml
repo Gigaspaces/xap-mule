@@ -48,12 +48,6 @@
 
     <os-eventcontainer:connector name="gigaSpacesConnector"/>
 
-    <configuration>
-        <default-dispatcher-threading-profile doThreading="false" />
-        <default-receiver-threading-profile doThreading="false" />
-        <default-service-threading-profile doThreading="false" />
-    </configuration>
-
     <model name="helloSample">
         <service name="MessageReaderUMO">
             <inbound>

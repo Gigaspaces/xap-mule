@@ -16,10 +16,6 @@
 
 package org.openspaces.esb.mule.eventcontainer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
@@ -35,10 +31,8 @@ import org.mule.api.service.Service;
 import org.mule.api.transaction.Transaction;
 import org.mule.api.transaction.TransactionException;
 import org.mule.api.transport.Connector;
-import org.mule.api.transport.MuleMessageFactory;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.exception.DefaultMessagingExceptionStrategy;
-import org.mule.execution.TransactionalErrorHandlingExecutionTemplate;
 import org.mule.transport.AbstractMessageReceiver;
 import org.mule.transport.AbstractReceiverWorker;
 import org.openspaces.core.GigaSpace;
@@ -46,6 +40,10 @@ import org.openspaces.events.AbstractEventListenerContainer;
 import org.openspaces.events.SpaceDataEventListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.TransactionStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * <code>OpenSpacesMessageReceiver</code> is used to receive data from an GigaSpaces's space.
@@ -81,7 +79,7 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
      * @see Service
      * @see ImmutableEndpoint
      */
-    
+
     public OpenSpacesMessageReceiver(Connector connector, FlowConstruct flowConstruct, InboundEndpoint endpoint) throws CreateException {
         super(connector, flowConstruct, endpoint);
         init(connector, endpoint);
@@ -90,7 +88,6 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
     public OpenSpacesMessageReceiver(Connector connector, Service service, InboundEndpoint endpoint) throws CreateException {
         super(connector, service, endpoint);
         init(connector, endpoint);
-
     }
 
     private void init(Connector connector, InboundEndpoint endpoint) throws CreateException {
@@ -103,7 +100,6 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
         String eventListenerContainerName = endpoint.getEndpointURI().getAddress();
         eventListenerContainer = (AbstractEventListenerContainer) applicationContext.getBean(eventListenerContainerName);
         eventListenerContainer.setEventListener(this);
-        eventListenerContainer.start();
     }
 
     /**
@@ -136,11 +132,8 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
      * @param source    Optional additional data or the actual source event data object (where relevant)
      */
     public void onEvent(final Object data, final GigaSpace gigaSpace, final TransactionStatus txStatus, final Object source) {
-
         if (txStatus != null) {
-			final ExecutionTemplate<MuleEvent> executionTemplate = TransactionalErrorHandlingExecutionTemplate
-					.createMainExecutionTemplate(connector.getMuleContext(),
-							endpoint.getTransactionConfig());
+            final ExecutionTemplate<MuleEvent> executionTemplate = createExecutionTemplate();
             try {
                 if (disposed) {
                     txStatus.setRollbackOnly();
@@ -149,8 +142,7 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
                 executionTemplate.execute(new ExecutionCallback<MuleEvent>() {
                 	@Override
                 	public MuleEvent process() throws Exception {
-                		doReceiveEvent(data, gigaSpace, txStatus, source);
-                		return null;
+                		return doReceiveEvent(data, gigaSpace, txStatus, source);
                 	}
                 });
             } catch (Exception e) {
@@ -168,14 +160,14 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
         }
     }
 
-    protected void doReceiveEvent(Object data, GigaSpace gigaSpace, TransactionStatus txStatus, Object source) throws Exception{
+
+    protected MuleEvent doReceiveEvent(Object data, GigaSpace gigaSpace, TransactionStatus txStatus,
+                               Object source) throws Exception{
         if (workManager) {
             getWorkManager().scheduleWork(new GigaSpaceWorker(data, this,gigaSpace));
         } else {
-            MuleMessageFactory factory = connector.getMuleMessageFactory();
-            MuleMessage message = factory.create(data, endpoint.getEncoding());
-            MuleEvent muleEvent = routeMessage(message);
-            
+            final MuleMessage message = createMuleMessage(data, endpoint.getEncoding());
+            final MuleEvent muleEvent = routeMessage(message);
             //write response 
             //should send back only if remote synch is set or no outbound endpoints
             if (endpoint.getExchangePattern().hasResponse()) {
@@ -187,8 +179,9 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
                 }              
                 writeResponseToSpace(gigaSpace,payload);
             }
-
+            return muleEvent;
         }
+        return null;
     }
 
     private static void writeResponseToSpace(GigaSpace gigaSpace, Object payload) {
@@ -237,10 +230,10 @@ public class OpenSpacesMessageReceiver extends AbstractMessageReceiver implement
 
     protected void doDisconnect() throws Exception {
         eventListenerContainer.setEventListener(null);
-        eventListenerContainer.stop();
     }
 
     protected void doStop() throws MuleException {
+        eventListenerContainer.stop();
     }
 
     protected void doConnect() throws Exception {

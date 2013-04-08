@@ -5,6 +5,7 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:spring="http://www.springframework.org/schema/beans"
       xmlns:os-eventcontainer="http://www.openspaces.org/schema/mule/os-eventcontainer"
+      xmlns:rss="http://www.mulesoft.org/schema/mule/core"
 
       xsi:schemaLocation="http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
        http://www.openspaces.org/schema/events http://www.openspaces.org/schema/events/openspaces-events.xsd
@@ -46,12 +47,10 @@
 
     </spring:beans>
 
+    <os-eventcontainer:connector name="gigaSpacesConnector" />
 
-    <os-eventcontainer:connector name="gigaSpacesConnector"/>
-
-    <flow name="helloSample" processingStrategy="synchronous">
+    <flow name="helloSample">
     	<inbound-endpoint address="os-eventcontainer://helloPollingEventContainer"/>
-        <logger message="Mule Message Received" />
     	<component class="org.openspaces.itest.esb.mule.MessageReader"/>
     	<outbound-endpoint address="os-eventcontainer://gigaSpace?updateOrWrite=false"/>
     </flow>
