@@ -16,9 +16,7 @@
 
 package org.openspaces.esb.mule.queue;
 
-import java.io.IOException;
-import java.util.UUID;
-
+import com.gigaspaces.document.DocumentProperties;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
 import org.mule.api.endpoint.EndpointURI;
@@ -34,7 +32,8 @@ import org.mule.config.i18n.Message;
 import org.mule.execution.TransactionalErrorHandlingExecutionTemplate;
 import org.mule.transport.AbstractMessageDispatcher;
 
-import com.gigaspaces.document.DocumentProperties;
+import java.io.IOException;
+import java.util.UUID;
 
 
 
@@ -133,8 +132,7 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         return null;
     }
 
-    private String createCorrelationIdIfNotExists(final MuleEvent event)
-    {
+    private String createCorrelationIdIfNotExists(final MuleEvent event) {
         String correlationId = event.getMessage().getCorrelationId() ;
         if(correlationId == null || correlationId.trim().length()==0)
             correlationId = UUID.randomUUID().toString();
@@ -156,10 +154,10 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         return entry;
     }
     
-    private MuleMessage waitForResponse(final MuleEvent event, final String correlationId) {
+    private MuleMessage waitForResponse(final MuleEvent event, final String correlationId) throws Exception {
         String replyTo = endpoint.getEndpointURI().getAddress() + DEFAULT_RESPONSE_QUEUE;
         
-        int timeout = event.getTimeout();
+        int timeout = endpoint.getResponseTimeout();
         
         if (logger.isDebugEnabled()) {
             logger.debug("waiting for response Event on endpointUri: " + replyTo);
@@ -173,22 +171,15 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
             if (logger.isDebugEnabled()) {
                 logger.debug("got response Event on endpointUri: " + replyTo + " response=" + responseEntry);
             }
-
-            MuleMessage createMuleMessage = createMuleMessage(responseEntry);
-            return responseEntry == null ? null : createMuleMessage;
-        } catch (Exception ex) {
+            if (responseEntry == null)
+                throw new DispatchException(event, getEndpoint());
+            return createMuleMessage(responseEntry);
+        } catch (Exception e) {
             if (logger.isDebugEnabled()) {
                 logger.debug("got no response Event on endpointUri: " + replyTo);
             }
-            return null;
+            throw e;
         }
-    }
-
-    /**
-     * Always create a correlation id since it is used as object routing
-     */
-    private String createCorrelationId() {
-       return UUID.randomUUID().toString();
     }
 
     protected void doDispose() {
