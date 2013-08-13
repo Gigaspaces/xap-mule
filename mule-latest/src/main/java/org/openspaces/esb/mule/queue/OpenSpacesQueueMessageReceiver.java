@@ -104,16 +104,13 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
              * load statistics/feedback or some kind of "event cost estimate". Therefore we just try to use half
              * of the receiver's workManager, since it is shared with receivers for other endpoints.
              */
-            int maxThreads = connector.getReceiverThreadingProfile().getMaxThreadsActive();
-            // also make sure batchSize is always at least 1
-            int batchSize = Math.max(1, ((maxThreads / 2) - 1));
-            
+
             OpenSpacesQueueObject entry =  connector.getGigaSpaceObj().take(template);
 
             if (entry != null) {
                 appendMessage(messages, entry);
                 // batch more messages if needed
-                OpenSpacesQueueObject[] entries = connector.getGigaSpaceObj().takeMultiple(template, batchSize);
+                OpenSpacesQueueObject[] entries = connector.getGigaSpaceObj().takeMultiple(template, connector.getBatchSize());
                 if (entries != null) {
                     for (OpenSpacesQueueObject entry1 : entries) {
                         appendMessage(messages, entry1);
@@ -173,7 +170,12 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
                 logger.debug(getEndpointURI() + " sending response to client  " + responseEntry);
             }
 
-            connector.getGigaSpaceObj().write(responseEntry);
+            Integer lease = responseMessage.getOutboundProperty(OpenSpacesQueueObject.RESPONSE_TIMEOUT_PROPERTY);
+            if (lease != null) {
+                connector.getGigaSpaceObj().write(responseEntry, (long) lease);
+            } else {
+                connector.getGigaSpaceObj().write(responseEntry);
+            }
         }
     }
 

@@ -23,6 +23,7 @@ import org.mule.api.MuleException;
 import org.mule.api.endpoint.EndpointException;
 import org.mule.api.endpoint.EndpointURI;
 import org.mule.api.endpoint.InboundEndpoint;
+import org.mule.api.lifecycle.Initialisable;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transport.MessageReceiver;
 import org.mule.endpoint.DynamicURIInboundEndpoint;
@@ -60,6 +61,7 @@ public class OpenSpacesQueueConnector extends AbstractConnector implements Appli
 
     private long timeout = 1000;
 
+    private Integer batchSize;
 
     private ApplicationContext applicationContext;
 
@@ -146,8 +148,21 @@ public class OpenSpacesQueueConnector extends AbstractConnector implements Appli
         this.timeout = timeout;
     }
 
+    public Integer getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(Integer batchSize) {
+        this.batchSize = batchSize;
+    }
+
     @Override
     protected void doInitialise() throws InitialisationException {
+        if (batchSize == null) {
+            // This is how batch size was determined prior to 9.7.0
+            int maxThreads = getReceiverThreadingProfile().getMaxThreadsActive();
+            batchSize = Math.max(1, ((maxThreads / 2) - 1));
+        }
     }
 
     @Override
