@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.openspaces.itest.esb.mule.queue;
+package org.openspaces.itest.esb.mule.config;
 
 import junit.framework.Assert;
 import org.junit.Test;
