@@ -101,7 +101,7 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
 		}
         
         //check if a response should be returned for this endpoint
-        boolean returnResponse = returnResponse(event, doSend) && !isTransactional;
+        final boolean returnResponse = returnResponse(event, doSend) && !isTransactional;
        
         //assign correlationId for sync invocations - so that the request can be correlated with the response
         final String correlationId = createCorrelationIdIfNotExists(event); 
@@ -113,7 +113,7 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
 			@Override
 			public MuleEvent process() throws Exception {
 				OpenSpacesQueueObject entry = prepareMessageForDispatch(
-						event.getMessage(), endpointUri, correlationId);
+						event.getMessage(), endpointUri, correlationId, returnResponse);
 				connector.getGigaSpaceObj().write(entry);
 				return null;
 			}
@@ -139,8 +139,10 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         return correlationId;
     }
 
-    private OpenSpacesQueueObject prepareMessageForDispatch(final  MuleMessage message,
-            final EndpointURI endpointUri, final String correlationId) throws IOException {
+    private OpenSpacesQueueObject prepareMessageForDispatch(final MuleMessage message,
+                                                            final EndpointURI endpointUri,
+                                                            final String correlationId,
+                                                            final boolean returnResponse) throws IOException {
         OpenSpacesQueueObject entry = connector.newQueueEntry(endpointUri.getAddress());
         entry.setCorrelationID(correlationId);
         entry.setPayload(message.getPayload());
@@ -149,6 +151,9 @@ public class OpenSpacesQueueMessageDispatcher extends AbstractMessageDispatcher 
         DocumentProperties payloadMetaData = new DocumentProperties();
         for (String propertyName : message.getPropertyNames(PropertyScope.OUTBOUND)) {
             payloadMetaData.put(propertyName, message.getProperty(propertyName, PropertyScope.OUTBOUND));
+        }
+        if (returnResponse) {
+            payloadMetaData.put(OpenSpacesQueueObject.RESPONSE_TIMEOUT_PROPERTY, endpoint.getResponseTimeout());
         }
         entry.setPayloadMetaData(payloadMetaData);
         return entry;

@@ -40,6 +40,8 @@ import com.gigaspaces.document.DocumentProperties;
 @SpaceClass(replicate = true,fifoSupport=FifoSupport.OPERATION)
 public class OpenSpacesQueueObject {
 
+    public static final String RESPONSE_TIMEOUT_PROPERTY = "OS_QUEUE_RESPONSE_TIMEOUT";
+
 	private String id;
 	private String endpointURI;
 
