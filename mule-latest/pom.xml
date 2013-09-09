@@ -7,7 +7,7 @@
 	<properties>
 		<muleTitle>mule-integration</muleTitle>
 		<muleVersion>3.3.0</muleVersion>
-        <springVersion>3.1.3.RELEASE</springVersion>
+    <springVersion>3.2.4.RELEASE</springVersion>
 	</properties>
 	<repositories>
 		<repository>
