@@ -70,7 +70,7 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
         this.connector = (OpenSpacesQueueConnector) connector;
         this.setReceiveMessagesInTransaction(endpoint.getTransactionConfig().isTransacted());
         // use the defined timeout to set the frequency of the non-blocking polling
-        this.setFrequency(this.connector.getTimeout()/10);
+        this.setFrequency(this.connector.getTimeout()/10L);
     }
 
     protected void doConnect() throws Exception {

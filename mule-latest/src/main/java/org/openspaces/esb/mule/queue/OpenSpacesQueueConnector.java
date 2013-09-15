@@ -145,6 +145,9 @@ public class OpenSpacesQueueConnector extends AbstractConnector implements Appli
      * The timeout waiting for a message on the queue in <b>milliseconds</b>. Defaults to 1000.
      */
     public void setTimeout(long timeout) {
+        if (timeout < 0) {
+            throw new IllegalArgumentException("timeout cannot be negative");
+        }
         this.timeout = timeout;
     }
 
@@ -153,6 +156,9 @@ public class OpenSpacesQueueConnector extends AbstractConnector implements Appli
     }
 
     public void setBatchSize(Integer batchSize) {
+        if (batchSize < 0) {
+            throw new IllegalArgumentException("batchSize cannot be negative");
+        }
         this.batchSize = batchSize;
     }
 

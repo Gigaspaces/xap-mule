@@ -18,9 +18,9 @@
             <xsd:extension base="mule:transactedConnectorType">
                 <xsd:attribute name="fifo" type="mule:substitutableBoolean"/>
                 <xsd:attribute name="persistent" type="mule:substitutableBoolean"/>
-                <xsd:attribute name="timeout" type="xsd:positiveInteger"/>
+                <xsd:attribute name="timeout" type="mule:substitutableLong"/>
                 <xsd:attribute name="giga-space" type="xsd:string"/>
-                <xsd:attribute name="batch-size" type="xsd:positiveInteger"/>
+                <xsd:attribute name="batch-size" type="mule:substitutableInt"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
