@@ -27,6 +27,8 @@ import org.openspaces.itest.esb.mule.SimpleMessage;
  */
 public class TakeAndWriteMultipleTests extends AbstractMuleTests {
 
+    private static final int TAKE_TIMEOUT = 10000;
+
     public void testTakeMultipleFromSpace() throws ConfigurationException {
         int numberOfMsgs = 10000;
         SimpleMessage msgs[] = new SimpleMessage[numberOfMsgs];
@@ -38,7 +40,7 @@ public class TakeAndWriteMultipleTests extends AbstractMuleTests {
         //blocking wait untill the mule writes back the messages to the space after reading them.
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage template = new SimpleMessage("Hello World " + i, true);
-            SimpleMessage message = gigaSpace.take(template, TIMEOUT);
+            SimpleMessage message = gigaSpace.take(template, TAKE_TIMEOUT);
             assertEquals(template, message);
         }
         assertEquals(0, gigaSpace.count(new SimpleMessage()));
