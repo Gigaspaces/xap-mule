@@ -7,7 +7,6 @@
 	<properties>
 		<muleTitle>mule-integration</muleTitle>
 		<muleVersion>3.3.0</muleVersion>
-    <springVersion>3.2.4.RELEASE</springVersion>
 	</properties>
 	<repositories>
 		<repository>
@@ -100,13 +99,10 @@
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
-        <version>${springVersion}</version>
-        <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
-        <version>${springVersion}</version>
     </dependency>
   </dependencies>
 	<build>
