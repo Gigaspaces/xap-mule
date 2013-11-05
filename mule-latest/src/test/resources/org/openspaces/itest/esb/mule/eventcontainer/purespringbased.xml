@@ -7,11 +7,11 @@
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:os-eventcontainer="http://www.openspaces.org/schema/mule/os-eventcontainer"
 
-       xsi:schemaLocation="http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/events/openspaces-events.xsd
+       xsi:schemaLocation="http://www.openspaces.org/schema/core http://www.openspaces.org/schema/9.7/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/9.7/events/openspaces-events.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.3/mule.xsd
-       http://www.openspaces.org/schema/mule/os-eventcontainer http://www.openspaces.org/schema/9.5/mule/3.3/mule-os-eventcontainer.xsd">
+       http://www.openspaces.org/schema/mule/os-eventcontainer http://www.openspaces.org/schema/9.7/mule/3.3/mule-os-eventcontainer.xsd">
 
     <description>Test that check the ability to run mule using spring base configuration.</description>
 
