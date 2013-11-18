@@ -58,13 +58,13 @@ public class TakeAndWriteCompositeSyncTests extends AbstractMuleTests {
         private static final long serialVersionUID = 1L;
         
         private String message;
-        private int stage;
+        private Integer stage;
         private String id;
 
         public SyncMessage() {
         }
 
-        public SyncMessage(String message, int stage) {
+        public SyncMessage(String message, Integer stage) {
             this.message = message;
             this.stage = stage;
         }
@@ -86,11 +86,11 @@ public class TakeAndWriteCompositeSyncTests extends AbstractMuleTests {
             this.message = message;
         }
 
-        public int getStage() {
+        public Integer getStage() {
             return stage;
         }
 
-        public void setStage(int stage) {
+        public void setStage(Integer stage) {
             this.stage = stage;
         }
 

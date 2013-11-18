@@ -62,14 +62,14 @@ public class TakeAndWriteRequestResponseTests extends AbstractMuleTests {
         private String message;
         private String id;
         private boolean read;
-        private int stage;
+        private Integer stage;
 
         public SyncMessage() {
         }
 
        
 
-        public SyncMessage(String message, int stage) {
+        public SyncMessage(String message, Integer stage) {
             this.message = message;
             this.stage = stage;
         }
@@ -99,11 +99,11 @@ public class TakeAndWriteRequestResponseTests extends AbstractMuleTests {
             this.message = message;
         }
 
-        public int getStage() {
+        public Integer getStage() {
             return stage;
         }
 
-        public void setStage(int stage) {
+        public void setStage(Integer stage) {
             this.stage = stage;
         }
 
