@@ -1,7 +1,4 @@
-http\://www.openspaces.org/schema/9.5/mule/3.3/mule-os-eventcontainer.xsd=org/openspaces/esb/mule/eventcontainer/config/mule-os-eventcontainer.xsd
-http\://www.openspaces.org/schema/9.5/mule/3.3/mule-os-queue.xsd=org/openspaces/esb/mule/queue/config/mule-os-queue.xsd
-http\://www.openspaces.org/schema/9.5/mule/3.3/mule-os-seda.xsd=org/openspaces/esb/mule/seda/config/mule-os-seda.xsd
+http\://www.openspaces.org/schema/9.7/mule/3.3/mule-os-eventcontainer.xsd=org/openspaces/esb/mule/eventcontainer/config/mule-os-eventcontainer.xsd
+http\://www.openspaces.org/schema/9.7/mule/3.3/mule-os-queue.xsd=org/openspaces/esb/mule/queue/config/mule-os-queue.xsd
+http\://www.openspaces.org/schema/9.7/mule/3.3/mule-os-seda.xsd=org/openspaces/esb/mule/seda/config/mule-os-seda.xsd
 
-
-
-        
