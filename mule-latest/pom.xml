@@ -10,6 +10,11 @@
 	</properties>
 	<repositories>
 		<repository>
+         	<id>local-nexus</id>
+	       	<name>local-nexus</name>
+       		<url>http://nexus.gsdev.info:8088/nexus</url>
+        </repository>
+		<repository>
 			<id>mule-deps</id>
 			<name>Mule Dependencies</name>
 			<url>http://dist.codehaus.org/mule/dependencies/maven2</url>
