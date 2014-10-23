@@ -114,7 +114,7 @@
 		</extensions>
 		<testResources>
 			<testResource>
-				<directory>${basedir}/../../gigaspaces</directory>
+				<directory>${basedir}/../../core</directory>
 				<includes>
 					<include>gslicense.xml</include>
 				</includes>
