@@ -16,23 +16,29 @@
 
 package org.openspaces.itest.esb.mule.pu;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
 import org.openspaces.itest.esb.mule.SimpleMessage;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Test the ability to run PU with mule embedded in it.
  *
  * @author yitzhaki
  */
-public class PUEmbedMuleRef2Tests extends AbstractDependencyInjectionSpringContextTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:/oorg/openspaces/itest/esb/mule/pu/puembedmuleref2.xml")
+public class PUEmbedMuleRef2Tests {
 
-    protected String[] getConfigLocations() {
-        return new String[]{"org/openspaces/itest/esb/mule/pu/puembedmuleref2.xml"};
-    }
 
+    @Test
     public void testTakeSingleFromSpace() throws Exception {
         GigaSpace gigaSpace = new GigaSpaceConfigurer(new UrlSpaceConfigurer("jini://*/*/space").lookupGroups(System.getProperty("user.name")).space()).gigaSpace();
 

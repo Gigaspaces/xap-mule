@@ -17,16 +17,17 @@
 package org.openspaces.itest.esb.mule.pu;
 
 
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  * Test the ability to run PU with mule imbedded in it.
  *
  * @author yitzhaki
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:/oorg/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml")
 public class FlowBasedPUEmbedMuleRef2Tests extends PUEmbedMuleRef2Tests {
-
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[]{"org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml"};
-    }
 
 }
