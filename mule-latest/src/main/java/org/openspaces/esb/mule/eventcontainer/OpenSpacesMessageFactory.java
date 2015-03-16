@@ -11,7 +11,11 @@ import org.openspaces.esb.mule.message.MessageHeader;
 import org.openspaces.esb.mule.message.UniqueIdMessageHeader;
 
 public class OpenSpacesMessageFactory extends AbstractMuleMessageFactory{
-    
+
+    public OpenSpacesMessageFactory() {
+
+    }
+
     public OpenSpacesMessageFactory(MuleContext ctx) {
         super(ctx);
     }

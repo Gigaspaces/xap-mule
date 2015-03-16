@@ -98,6 +98,7 @@ public class OpenSpacesMuleContextLoader implements ApplicationContextAware, Ini
                             return context;
                         }
                     };
+                    muleXmlConfigurationBuilder.setParentContext(this.applicationContext);
                     muleContext = muleContextFactory.createMuleContext(muleXmlConfigurationBuilder);
                     muleContext.start();
                 } catch (Exception e) {
