@@ -7,6 +7,8 @@ import org.mule.transport.AbstractMuleMessageFactory;
 
 public class OpenSpacesQueueMessageFactory extends AbstractMuleMessageFactory {
 
+    public OpenSpacesQueueMessageFactory(){}
+
     public OpenSpacesQueueMessageFactory(MuleContext ctx) {
         super(ctx);
     }
