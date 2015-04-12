@@ -8,6 +8,7 @@
 		<muleTitle>mule-integration</muleTitle>
 		<muleVersion>3.5.0</muleVersion>
         <spring.version>3.2.4.RELEASE</spring.version>
+        <junitVersion>4.11</junitVersion>
 	</properties>
 	<repositories>
         <repository>
@@ -101,6 +102,12 @@
         <artifactId>spring-test</artifactId>
         <version>${spring.version}</version>
     </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junitVersion}</version>
+            <scope>test</scope>
+        </dependency>
   </dependencies>
 	<build>
 		<extensions>
