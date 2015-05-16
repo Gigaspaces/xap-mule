@@ -17,7 +17,11 @@
             <url>https://repository-master.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
-		
+        <repository>
+            <id>mule-deps</id>
+            <name>Mule dependencies</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
 		<repository>
 			<id>org.openspaces</id>
 			<name>OpenSpaces</name>
