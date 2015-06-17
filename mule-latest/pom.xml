@@ -11,6 +11,11 @@
         <junitVersion>4.11</junitVersion>
 	</properties>
 	<repositories>
+	<repository>
+            <id>mule-deps</id>
+            <name>Mule dependencies</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
         <repository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Repository</name>
