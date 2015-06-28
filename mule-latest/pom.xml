@@ -32,6 +32,12 @@
 				<checksumPolicy>warn</checksumPolicy>
 			</snapshots>
 		</repository>
+		 <repository>
+            <id>mule-deps</id>
+            <name>Mule dependencies</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
+
 	</repositories>
 	<dependencies>
 		<dependency>
