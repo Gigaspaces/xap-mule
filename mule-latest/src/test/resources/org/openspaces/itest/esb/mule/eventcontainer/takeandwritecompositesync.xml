@@ -7,8 +7,7 @@
       xmlns:os-queue="http://www.openspaces.org/schema/mule/os-queue"
       xmlns:os-eventcontainer="http://www.openspaces.org/schema/mule/os-eventcontainer"
       xmlns:stdio="http://www.mulesoft.org/schema/mule/stdio"
- 	xmlns:os-seda="http://www.openspaces.org/schema/mule/os-seda"
- 
+
       xsi:schemaLocation="http://www.openspaces.org/schema/core http://www.openspaces.org/schema/11.0/core/openspaces-core.xsd
        http://www.openspaces.org/schema/events http://www.openspaces.org/schema/11.0/events/openspaces-events.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
@@ -16,7 +15,6 @@
        http://www.mulesoft.org/schema/mule/stdio ttp://www.mulesoft.org/schema/mule/stdio/3.5/mule-stdio.xsd
        http://www.openspaces.org/schema/mule/os-queue http://www.openspaces.org/schema/11.0/mule/3.5/mule-os-queue.xsd
        http://www.openspaces.org/schema/mule/os-eventcontainer http://www.openspaces.org/schema/11.0/mule/3.5/mule-os-eventcontainer.xsd
-       http://www.openspaces.org/schema/mule/os-seda http://www.openspaces.org/schema/11.0/mule/3.5/mule-os-seda.xsd
        ">
 
     <description>Tests mule connector, receive and process single object at a time.</description>

@@ -195,7 +195,6 @@
 					<excludes>
 						<exclude>**/Abstract*</exclude>
 						<exclude>**/PersistentQueueTests*</exclude>
-						<exclude>**/PersistentSedaTests*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
