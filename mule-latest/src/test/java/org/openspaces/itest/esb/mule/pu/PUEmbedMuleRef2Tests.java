@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNotNull;
  * @author yitzhaki
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/oorg/openspaces/itest/esb/mule/pu/puembedmuleref2.xml")
+@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/puembedmuleref2.xml")
 public class PUEmbedMuleRef2Tests {
 
 

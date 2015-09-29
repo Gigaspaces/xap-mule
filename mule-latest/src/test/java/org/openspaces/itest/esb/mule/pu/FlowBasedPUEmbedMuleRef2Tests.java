@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author yitzhaki
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/oorg/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml")
+@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml")
 public class FlowBasedPUEmbedMuleRef2Tests extends PUEmbedMuleRef2Tests {
 
 }

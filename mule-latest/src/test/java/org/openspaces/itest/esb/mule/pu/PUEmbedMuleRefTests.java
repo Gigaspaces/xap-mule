@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
  * @author yitzhaki
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/oorg/openspaces/itest/esb/mule/pu/puembedmuleref.xml")
+@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/puembedmuleref.xml")
 public class PUEmbedMuleRefTests {
 
 
