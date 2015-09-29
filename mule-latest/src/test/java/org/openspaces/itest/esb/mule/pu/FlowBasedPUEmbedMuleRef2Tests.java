@@ -16,18 +16,18 @@
 
 package org.openspaces.itest.esb.mule.pu;
 
-
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 /**
  * Test the ability to run PU with mule imbedded in it.
  *
  * @author yitzhaki
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml")
+//@see http://forums.mulesoft.com/questions/1042/the-mule-v3-7-0-flows-don-t-have-access-to-beans-defined-in-our-other-spring-v4-1-6.html
 public class FlowBasedPUEmbedMuleRef2Tests extends PUEmbedMuleRef2Tests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/pu/flow-puembedmuleref2.xml";
+    }
 }

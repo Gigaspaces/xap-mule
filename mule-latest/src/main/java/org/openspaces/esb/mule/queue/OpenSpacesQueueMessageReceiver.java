@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.mule.DefaultMuleMessage;
+import org.mule.VoidMuleEvent;
+import org.mule.api.MuleContext;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
@@ -48,6 +50,14 @@ import com.j_spaces.core.exception.SpaceUnavailableException;
  * @author kimchy
  */
 public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageReceiver {
+
+    private static final MuleEvent voidEvent = new VoidMuleEvent() {
+        // This override is required for org.mule.transport.TransactedPollingMessageReceiver$1.process(TransactedPollingMessageReceiver.java:161) ~[mule-core-3.7.0.jar:3.7.0]
+        @Override
+        public MuleContext getMuleContext() {
+            return null;
+        }
+    };
 
     private OpenSpacesQueueConnector connector;
 
@@ -134,7 +144,9 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
         // keep first dequeued event
         messages.add(inboundMessage);
     }
-    protected void processMessage(Object msg) throws Exception {
+
+    @Override
+    protected MuleEvent processMessage(Object msg) throws Exception {
         // getMessages() returns UMOEvents
         MuleMessage message = (MuleMessage) msg;
 
@@ -177,6 +189,8 @@ public class OpenSpacesQueueMessageReceiver extends TransactedPollingMessageRece
                 connector.getGigaSpaceObj().write(responseEntry);
             }
         }
+
+        return response != null ? response : voidEvent;
     }
 
     /*

@@ -18,23 +18,27 @@ package org.openspaces.itest.esb.mule.pu;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mule.api.config.ConfigurationException;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
+import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.esb.mule.SimpleMessage;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test the ability to run PU with mule imbedded in it.
  *
  * @author yitzhaki
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/puembedmuleref.xml")
-public class PUEmbedMuleRefTests {
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:/org/openspaces/itest/esb/mule/pu/puembedmuleref.xml")
+//@see http://forums.mulesoft.com/questions/1042/the-mule-v3-7-0-flows-don-t-have-access-to-beans-defined-in-our-other-spring-v4-1-6.html
+public class PUEmbedMuleRefTests extends AbstractMuleTests {
+
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/pu/puembedmuleref.xml";
+    }
 
 
     @Test

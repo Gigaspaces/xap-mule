@@ -16,7 +16,8 @@
 
 package org.openspaces.itest.esb.mule.pu;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
@@ -29,8 +30,9 @@ import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerP
  *
  * @author yitzhaki
  */
-public class IntegratedPUMuleEmbedTests extends TestCase {
+public class IntegratedPUMuleEmbedTests {
 
+    @Test
     public void testTakeSingleFromSpace() throws Exception {
         IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
         provider.addConfigLocation("org/openspaces/itest/esb/mule/pu/puembedmuleref2.xml");
@@ -48,9 +50,9 @@ public class IntegratedPUMuleEmbedTests extends TestCase {
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage template = new SimpleMessage("Hello World " + i, true);
             SimpleMessage message = gigaSpace.take(template, 5000);
-            assertNotNull(message);
+            Assert.assertNotNull(message);
         }
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
+        Assert.assertEquals(0, gigaSpace.count(new SimpleMessage()));
 
         container.close();
     }

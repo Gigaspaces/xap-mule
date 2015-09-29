@@ -6,8 +6,8 @@
 	<version>11.0.0-SNAPSHOT</version>
 	<properties>
 		<muleTitle>mule-integration</muleTitle>
-		<muleVersion>3.5.0</muleVersion>
-        <spring.version>3.2.4.RELEASE</spring.version>
+		<muleVersion>3.7.0</muleVersion>
+		<spring.version>4.1.6.RELEASE</spring.version>
         <junitVersion>4.11</junitVersion>
 	</properties>
 	<repositories>

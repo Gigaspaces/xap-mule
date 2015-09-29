@@ -23,6 +23,7 @@ import java.util.Map;
 import org.mule.api.MuleContext;
 import org.mule.api.context.MuleContextFactory;
 import org.mule.config.ConfigResource;
+import org.mule.config.spring.OptionalObjectsController;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.openspaces.pu.service.ServiceDetails;
@@ -90,9 +91,10 @@ public class OpenSpacesMuleContextLoader implements ApplicationContextAware, Ini
                 try {
                     muleContextFactory = new DefaultMuleContextFactory();
                     SpringXmlConfigurationBuilder muleXmlConfigurationBuilder = new SpringXmlConfigurationBuilder(location) {
+
                         @Override
-                        protected ApplicationContext createApplicationContext(MuleContext muleContext, ConfigResource[] configResources) throws Exception {
-                            AbstractApplicationContext context = (AbstractApplicationContext) super.createApplicationContext(muleContext, configResources);
+                        protected ApplicationContext doCreateApplicationContext(MuleContext muleContext, ConfigResource[] configResources, OptionalObjectsController optionalObjectsController) {
+                            AbstractApplicationContext context = (AbstractApplicationContext) super.doCreateApplicationContext(muleContext, configResources, optionalObjectsController);
                             context.setParent(applicationContext);
                             muleApplicationContext = context;
                             return context;
