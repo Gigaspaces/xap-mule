@@ -121,17 +121,6 @@
 				<version>1.1.20</version>
 			</extension>
 		</extensions>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/../../core</directory>
-				<includes>
-					<include>gslicense.xml</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
