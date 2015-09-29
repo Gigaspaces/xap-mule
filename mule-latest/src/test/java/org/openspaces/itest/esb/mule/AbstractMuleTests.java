@@ -15,13 +15,11 @@
  */
 package org.openspaces.itest.esb.mule;
 
-import java.util.concurrent.TimeUnit;
-
 import org.mule.module.client.MuleClient;
-import org.mule.tck.FunctionalTestCase;
+import org.mule.tck.junit4.FunctionalTestCase;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
-import org.openspaces.core.space.UrlSpaceConfigurer;
+import org.openspaces.core.space.SpaceProxyConfigurer;
 
 /**
  * Superclass for mule functional tests
@@ -32,40 +30,17 @@ public abstract class AbstractMuleTests extends FunctionalTestCase {
 
     protected static final int TIMEOUT = 5000;
 
-    protected GigaSpace gigaSpace;
-
+	protected GigaSpace gigaSpace;
     protected MuleClient muleClient;
-    
-    @Override
-    protected abstract String getConfigResources();
-    
+
+    protected abstract String getConfigFile();
+
     @Override
     protected void doSetUp() throws Exception {
         super.doSetUp();
         muleClient = new MuleClient(muleContext);
-        gigaSpace = new GigaSpaceConfigurer(new UrlSpaceConfigurer("jini://*/*/" + getSpaceName()).lookupGroups(System.getProperty("user.name")).space()).gigaSpace();
+		final String spaceName = "space";
+		final String lookupGroups = System.getProperty("user.name");
+        gigaSpace = new GigaSpaceConfigurer(new SpaceProxyConfigurer(spaceName).lookupGroups(lookupGroups)).create();
     }
-    
-    protected String getSpaceName() {
-        return "space";
-    }
-    
-	protected static void repetitiveAssert(Runnable runnable, long timeout, TimeUnit timeUnit) {
-		final long time = System.currentTimeMillis();
-		final long timeoutInMilliseconds = timeUnit.toMillis(timeout);
-		do {
-			try {
-				runnable.run();
-				return;
-			} catch (AssertionError e) {
-				try {
-					Thread.sleep(10);
-				} catch (Exception ee) {					
-				}
-			}
-		} while (System.currentTimeMillis() - time < timeoutInMilliseconds);
-		runnable.run();
-	}
-
-
 }

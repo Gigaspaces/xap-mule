@@ -16,6 +16,8 @@
 
 package org.openspaces.itest.esb.mule.eventcontainer;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.config.ConfigurationException;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.esb.mule.SimpleMessage;
@@ -27,6 +29,12 @@ import org.openspaces.itest.esb.mule.SimpleMessage;
  */
 public class PureSpringBasedTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/eventcontainer/purespringbased.xml";
+    }
+
+    @Test
     public void testTakeSingleFromSpace() throws ConfigurationException {
         int numberOfMsgs = 10;
         for (int i = 0; i < numberOfMsgs; i++) {
@@ -38,14 +46,8 @@ public class PureSpringBasedTests extends AbstractMuleTests {
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage template = new SimpleMessage("Hello World " + i, true);
             SimpleMessage message = gigaSpace.take(template, TIMEOUT);
-            assertEquals(template, message);
+            Assert.assertEquals(template, message);
         }
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
+        Assert.assertEquals(0, gigaSpace.count(new SimpleMessage()));
     }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/eventcontainer/purespringbased.xml";
-    }
-
 }

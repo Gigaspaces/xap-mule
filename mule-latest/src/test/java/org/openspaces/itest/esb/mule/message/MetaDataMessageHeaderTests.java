@@ -19,6 +19,8 @@ package org.openspaces.itest.esb.mule.message;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.config.ConfigurationException;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 
@@ -34,6 +36,12 @@ import org.openspaces.itest.esb.mule.AbstractMuleTests;
  */
 public class MetaDataMessageHeaderTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/message/metadatamessageheader.xml";
+    }
+
+    @Test
     public void testTakeSingleFromSpace() throws ConfigurationException {
         int numberOfMsgs = 10;
         List<MessageWithMessageHeader> list = new ArrayList<MessageWithMessageHeader>(numberOfMsgs);
@@ -55,17 +63,12 @@ public class MetaDataMessageHeaderTests extends AbstractMuleTests {
             MessageWithMessageHeader template = new MessageWithMessageHeader(msg, i + "");
             template.setRead(true);
             MessageWithMessageHeader message = gigaSpace.take(template, TIMEOUT);
-            assertEquals("Hello World " + i, message.getMessage());
-            assertEquals(i + "", message.getUniqueId());
-            assertEquals(new Integer(i), message.getCorrelationGroupSize());
-            assertEquals(new Integer(i), message.getCorrelationSequence());
-            assertEquals("new name " + i, message.getProperty("name"));
+            Assert.assertEquals("Hello World " + i, message.getMessage());
+            Assert.assertEquals(i + "", message.getUniqueId());
+            Assert.assertEquals(new Integer(i), message.getCorrelationGroupSize());
+            Assert.assertEquals(new Integer(i), message.getCorrelationSequence());
+            Assert.assertEquals("new name " + i, message.getProperty("name"));
         }
-        assertEquals(0, gigaSpace.count(new MessageWithMessageHeader()));
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/message/metadatamessageheader.xml";
+        Assert.assertEquals(0, gigaSpace.count(new MessageWithMessageHeader()));
     }
 }

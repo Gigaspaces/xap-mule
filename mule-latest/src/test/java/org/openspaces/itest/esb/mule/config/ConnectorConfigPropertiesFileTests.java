@@ -16,7 +16,7 @@
 
 package org.openspaces.itest.esb.mule.config;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mule.config.spring.SpringRegistry;
 import org.openspaces.esb.mule.queue.OpenSpacesQueueConnector;
@@ -28,8 +28,9 @@ import org.springframework.context.ApplicationContext;
  * @since 9.7
  */
 public class ConnectorConfigPropertiesFileTests extends AbstractMuleTests {
+
     @Override
-    protected String getConfigResources() {
+    protected String getConfigFile() {
         return "org/openspaces/itest/esb/mule/queue/connector-properties-file-config.xml";
     }
 
@@ -44,5 +45,4 @@ public class ConnectorConfigPropertiesFileTests extends AbstractMuleTests {
         Assert.assertTrue(connector.isFifo());
         Assert.assertFalse(connector.isPersistent());
     }
-
 }

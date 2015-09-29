@@ -1,5 +1,7 @@
 package org.openspaces.itest.esb.mule.queue;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.MuleMessage;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 
@@ -11,16 +13,17 @@ import org.openspaces.itest.esb.mule.AbstractMuleTests;
  */
 public class ClusteredTxSimpleQueueTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/queue/clustered-tx-simple.xml";
+    }
+
+    @Test
     public void testSimpleQueueHandling() throws Exception {
         muleClient.dispatch("os-queue://test1", "testme", null);
 
         MuleMessage message = muleClient.request("os-queue://test3", 5000);
         System.out.println(gigaSpace.read(null));
-        assertEquals("testmeAppender1Appender2", message.getPayload());
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/queue/clustered-tx-simple.xml";
+        Assert.assertEquals("testmeAppender1Appender2", message.getPayload());
     }
 }

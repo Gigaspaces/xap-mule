@@ -16,7 +16,7 @@
 
 package org.openspaces.itest.esb.mule.config;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mule.config.spring.SpringRegistry;
 import org.openspaces.esb.mule.queue.OpenSpacesQueueConnector;
@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationContext;
 public class OpenSpacesQueueConnectorConfigTests extends AbstractMuleTests {
 
     @Override
-    protected String getConfigResources() {
+    protected String getConfigFile() {
         return "org/openspaces/itest/esb/mule/queue/queue-connector-batch-size-config.xml";
     }
 
@@ -42,5 +42,4 @@ public class OpenSpacesQueueConnectorConfigTests extends AbstractMuleTests {
         Assert.assertNotNull(connector);
         Assert.assertEquals(Integer.valueOf(10), connector.getBatchSize());
     }
-
 }

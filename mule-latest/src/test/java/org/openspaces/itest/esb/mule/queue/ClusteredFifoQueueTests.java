@@ -1,5 +1,7 @@
 package org.openspaces.itest.esb.mule.queue;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.openspaces.esb.mule.queue.OpenSpacesFifoQueueObject;
 import org.openspaces.esb.mule.queue.OpenSpacesQueueMessageDispatcher;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
@@ -9,8 +11,14 @@ import org.openspaces.itest.esb.mule.AbstractMuleTests;
  */
 public class ClusteredFifoQueueTests extends AbstractMuleTests {
 
-
     private static int OBJECTS = 100;
+
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/queue/clustered-fifo.xml";
+    }
+
+    @Test
     public void testClusteredSimpleQueueHandling() throws Exception {
         for (int i = 0; i < OBJECTS; i++) {
             
@@ -26,12 +34,8 @@ public class ClusteredFifoQueueTests extends AbstractMuleTests {
             responseTemplate.setEndpointURI("test1" + OpenSpacesQueueMessageDispatcher.DEFAULT_RESPONSE_QUEUE);
             
             OpenSpacesFifoQueueObject response = gigaSpace.take(responseTemplate,5000);
-          
-            assertEquals("testme" + i +"Appender1", response.getPayload());
+
+            Assert.assertEquals("testme" + i + "Appender1", response.getPayload());
         }
-    }
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/queue/clustered-fifo.xml";
     }
 }

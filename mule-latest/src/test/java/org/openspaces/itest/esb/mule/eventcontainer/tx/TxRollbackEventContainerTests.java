@@ -16,6 +16,8 @@
 
 package org.openspaces.itest.esb.mule.eventcontainer.tx;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.config.ConfigurationException;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.esb.mule.SimpleMessage;
@@ -25,6 +27,12 @@ import org.openspaces.itest.esb.mule.SimpleMessage;
  */
 public class TxRollbackEventContainerTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/eventcontainer/tx/local-tx.xml";
+    }
+
+    @Test
     public void testTxRollbackLocalTransaction() throws ConfigurationException {
         int numberOfMsgs = 1;
         for (int i = 0; i < numberOfMsgs; i++) {
@@ -36,14 +44,9 @@ public class TxRollbackEventContainerTests extends AbstractMuleTests {
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage template = new SimpleMessage(true);
             SimpleMessage message = gigaSpace.take(template, TIMEOUT);
-            assertNotNull("should receive a response here...", message);
-            assertEquals("rolledback", message.getMessage());
+            Assert.assertNotNull("should receive a response here...", message);
+            Assert.assertEquals("rolledback", message.getMessage());
         }
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/eventcontainer/tx/local-tx.xml";
+        Assert.assertEquals(0, gigaSpace.count(new SimpleMessage()));
     }
 }

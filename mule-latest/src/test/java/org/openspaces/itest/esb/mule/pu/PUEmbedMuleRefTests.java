@@ -16,6 +16,7 @@
 
 package org.openspaces.itest.esb.mule.pu;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mule.api.config.ConfigurationException;
@@ -25,8 +26,6 @@ import org.openspaces.core.space.UrlSpaceConfigurer;
 import org.openspaces.itest.esb.mule.SimpleMessage;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test the ability to run PU with mule imbedded in it.
@@ -54,8 +53,8 @@ public class PUEmbedMuleRefTests {
         for (int i = 0; i < numberOfMsgs; i++) {
             SimpleMessage template = new SimpleMessage("Hello World " + i, true);
             SimpleMessage message = gigaSpace.take(template, 5000);
-            assertEquals(template, message);
+            Assert.assertEquals(template, message);
         }
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
+        Assert.assertEquals(0, gigaSpace.count(new SimpleMessage()));
     }
 }

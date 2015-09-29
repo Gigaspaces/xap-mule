@@ -1,5 +1,7 @@
 package org.openspaces.itest.esb.mule.queue;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.openspaces.esb.mule.queue.OpenSpacesQueueMessageDispatcher;
 import org.openspaces.esb.mule.queue.OpenSpacesQueueObject;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
@@ -10,6 +12,12 @@ import org.openspaces.itest.esb.mule.AbstractMuleTests;
  */
 public class NullRequestResponseQueueTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/queue/null-request-response-queue.xml";
+    }
+
+    @Test
     public void testSimpleQueueHandling() throws Exception {
 
         OpenSpacesQueueObject request = new OpenSpacesQueueObject();
@@ -21,12 +29,6 @@ public class NullRequestResponseQueueTests extends AbstractMuleTests {
         responseTemplate.setEndpointURI("null.response.in" + OpenSpacesQueueMessageDispatcher.DEFAULT_RESPONSE_QUEUE);
         
         OpenSpacesQueueObject response = gigaSpace.take(responseTemplate,5000);
-        assertNull(response.getPayload());
-       
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/queue/null-request-response-queue.xml";
+        Assert.assertNull(response.getPayload());
     }
 }

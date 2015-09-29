@@ -18,6 +18,8 @@ package org.openspaces.itest.esb.mule.eventcontainer;
 
 import java.io.Serializable;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.MuleEventContext;
 import org.mule.api.lifecycle.Callable;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
@@ -32,6 +34,12 @@ import com.gigaspaces.annotation.pojo.SpaceId;
  */
 public class TakeAndWriteSyncTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/eventcontainer/takeandwritesync.xml";
+    }
+
+    @Test
     public void testTakeSingleFromSpace() throws Exception {
         
 
@@ -44,16 +52,10 @@ public class TakeAndWriteSyncTests extends AbstractMuleTests {
         for (int i = 0; i < numberOfMsgs; i++) {
             SyncMessage template = new SyncMessage("Hello World " + i, 2);
             SyncMessage message = gigaSpace.take(template, TIMEOUT);
-            assertNotNull(message);
+            Assert.assertNotNull(message);
         }
-        assertEquals(0, gigaSpace.count(new SyncMessage()));
+        Assert.assertEquals(0, gigaSpace.count(new SyncMessage()));
     }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/eventcontainer/takeandwritesync.xml";
-    }
-    
     
     public static class SyncMessage implements Message,Serializable
     {

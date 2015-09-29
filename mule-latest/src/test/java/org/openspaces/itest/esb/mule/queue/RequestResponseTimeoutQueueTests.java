@@ -17,6 +17,7 @@
 package org.openspaces.itest.esb.mule.queue;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.MuleMessage;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.utils.TestUtils;
@@ -30,6 +31,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class RequestResponseTimeoutQueueTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/queue/request-response-timeout-queue.xml";
+    }
+
+    @Test
     public void testResponseTimeout() throws Exception {
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -67,11 +74,4 @@ public class RequestResponseTimeoutQueueTests extends AbstractMuleTests {
 
         logger.info("OK");
     }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/queue/request-response-timeout-queue.xml";
-    }
-
-
 }

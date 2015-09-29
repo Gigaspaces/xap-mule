@@ -16,6 +16,8 @@
 
 package org.openspaces.itest.esb.mule.message;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.mule.api.config.ConfigurationException;
 import org.openspaces.itest.esb.mule.AbstractMuleTests;
 import org.openspaces.itest.esb.mule.SimpleMessage;
@@ -31,6 +33,12 @@ import org.openspaces.itest.esb.mule.SimpleMessage;
  */
 public class MetaDataTests extends AbstractMuleTests {
 
+    @Override
+    protected String getConfigFile() {
+        return "org/openspaces/itest/esb/mule/message/metadata.xml";
+    }
+
+    @Test
     public void testTakeSingleFromSpace() throws ConfigurationException {
         int numberOfMsgs = 10;
         for (int i = 0; i < numberOfMsgs; i++) {
@@ -41,15 +49,10 @@ public class MetaDataTests extends AbstractMuleTests {
         for (int i = 0; i < numberOfMsgs; i++) {
             ProcessedMessage template = new ProcessedMessage("Hello World " + i);
             ProcessedMessage message = gigaSpace.take(template, TIMEOUT);
-            assertEquals(template, message);
-            assertEquals("processed message " + "Hello World " + i, message.getProperty("name"));
+            Assert.assertEquals(template, message);
+            Assert.assertEquals("processed message " + "Hello World " + i, message.getProperty("name"));
         }
-        assertEquals(0, gigaSpace.count(new ProcessedMessage()));
-        assertEquals(0, gigaSpace.count(new SimpleMessage()));
-    }
-
-    @Override
-    protected String getConfigResources() {
-        return "org/openspaces/itest/esb/mule/message/metadata.xml";
+        Assert.assertEquals(0, gigaSpace.count(new ProcessedMessage()));
+        Assert.assertEquals(0, gigaSpace.count(new SimpleMessage()));
     }
 }
