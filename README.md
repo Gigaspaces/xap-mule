@@ -1,5 +1,7 @@
+# XAP-Mule
+
+[![Build Status](https://travis-ci.org/Gigaspaces/xap-mule.svg)](https://travis-ci.org/Gigaspaces/xap-mule)
+
 # Overview
 
-This repository provides an integration between XAP and Mule.
-
-* Master Branch [![Build Status](https://travis-ci.org/gigaspaces/xap-mule.svg?branch=master)](https://travis-ci.org/gigaspaces/xap-mule)
+This repository provides an integration between [XAP](http://www.gigaspaces.com/xap) and [Mule](https://www.mulesoft.com/resources/esb/what-mule-esb).
