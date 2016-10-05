@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns="http://www.mulesoft.org/schema/mule/core"
-      xmlns:os-events="http://www.openspaces.org/schema/events"
-      xmlns:os-core="http://www.openspaces.org/schema/core"
+      xmlns:os-events="http://openspaces.gigaspaces.org/schema/events"
+      xmlns:os-core="http://openspaces.gigaspaces.org/schema/core"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:spring="http://www.springframework.org/schema/beans"
-      xmlns:os-eventcontainer="http://www.openspaces.org/schema/mule/os-eventcontainer"
+      xmlns:os-eventcontainer="http://openspaces.gigaspaces.org/schema/mule/os-eventcontainer"
 
-      xsi:schemaLocation="http://www.openspaces.org/schema/core http://www.openspaces.org/schema/10.2/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/10.2/events/openspaces-events.xsd
+      xsi:schemaLocation="http://openspaces.gigaspaces.org/schema/core http://openspaces.gigaspaces.org/schema/10.2/core/openspaces-core.xsd
+       http://openspaces.gigaspaces.org/schema/events http://openspaces.gigaspaces.org/schema/10.2/events/openspaces-events.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.5/mule.xsd
-       http://www.openspaces.org/schema/mule/os-eventcontainer http://www.openspaces.org/schema/10.2/mule/3.5/mule-os-eventcontainer.xsd">
+       http://openspaces.gigaspaces.org/schema/mule/os-eventcontainer http://openspaces.gigaspaces.org/schema/10.2/mule/3.5/mule-os-eventcontainer.xsd">
 
     <description>Test the ability of mule connector to receive and process bulk of objects.</description>
 
