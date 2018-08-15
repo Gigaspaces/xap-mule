@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gigaspaces</groupId>
 	<artifactId>mule-os</artifactId>
-	<version>10.2.0-13813-RELEASE</version>
+	<version>10.2.0-13836-RELEASE</version>
 	<properties>
 		<muleTitle>mule-integration</muleTitle>
 		<muleVersion>3.5.0</muleVersion>
